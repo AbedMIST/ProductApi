@@ -1,0 +1,54 @@
+@ProductApi_HostAddress = http://localhost:5000
+
+### List
+GET {{ProductApi_HostAddress}}/api/products
+Accept: application/json
+
+### Create
+POST {{ProductApi_HostAddress}}/api/products
+Content-Type: application/json
+
+{ "name": "Keyboard", "description": "Mechanical", "price": 79.99, "stock": 25 }
+
+### Get one
+GET {{ProductApi_HostAddress}}/api/products/1
+
+### Update
+PUT {{ProductApi_HostAddress}}/api/products/1
+Content-Type: application/json
+
+{ "name": "Keyboard Pro", "description": "Mechanical, RGB", "price": 99.99, "stock": 10 }
+
+### Delete
+DELETE {{ProductApi_HostAddress}}/api/products/1
+
+### Invalid (expect 400)
+POST {{ProductApi_HostAddress}}/api/products
+Content-Type: application/json
+
+{ "name": "", "price": -5, "stock": -1 }
+
+### Register
+POST {{ProductApi_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{ "username": "alice", "password": "password123" }
+
+### Login (returns accessToken + refreshToken)
+# @name login
+POST {{ProductApi_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{ "username": "alice", "password": "password123" }
+
+### Refresh (old refresh token becomes invalid; use the new one from the response)
+POST {{ProductApi_HostAddress}}/api/auth/refresh
+Content-Type: application/json
+
+{ "refreshToken": "{{login.response.body.$.refreshToken}}" }
+
+### Logout (revokes the refresh token)
+POST {{ProductApi_HostAddress}}/api/auth/logout
+Content-Type: application/json
+
+{ "refreshToken": "{{login.response.body.$.refreshToken}}" }
